@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "22dff5e7-2ab8-4e17-8633-e252987ea0bf"
+      }
+    },
+    "owner": "ajibramasta35"
   }
 }
