@@ -12,11 +12,7 @@ import HomeScreen from './Screens/HomeScreen';
 import AboutScreen from './Screens/AboutScreen';
 import SearchScreen from './Screens/SearchScreen';
 import WelcomeScreen from './Screens/WelcomeScreen';
-
-
-const TransitionScreenOptions = {
-  ...TransitionPresets.SlideFromRightIOS, // This is where the transition happens
-};
+import MoviedetailScreen from './Screens/MoviedetailScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -28,7 +24,7 @@ export default function App() {
         <StatusBar style="light" />
         <NavigationContainer>
           <Stack.Navigator>
-          <Stack.Screen
+            <Stack.Screen
               name="Welcome"
               component={WelcomeScreen}
               options={{
@@ -66,6 +62,15 @@ export default function App() {
                 },
               }}
             />
+            <Stack.Screen
+              name="MovieDetail"
+              component={MoviedetailScreen}
+              options={{
+                cardStyle: {
+                  backgroundColor: 'red',
+                },
+              }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaView>
@@ -76,10 +81,9 @@ export default function App() {
 const HomeStack = () => (
   <Tab.Navigator
     screenOptions={{
-      activeTintColor: 'red',
-      inactiveTintColor: 'white',
       tabBarStyle: styles.tabBarStyle,
-      TransitionScreenOptions,
+      tabBarActiveTintColor: 'red',
+      tabBarInactiveTintColor: '#e5e5e5',
     }}
     sceneContainerStyle={{ backgroundColor: '#171820' }}
   >
@@ -93,7 +97,39 @@ const HomeStack = () => (
             source={
               focused
                 ? require('./assets/Icons/menu.png')
-                : require('./assets/Icons/menu.png')
+                : require('./assets/Icons/search.png')
+            }
+          />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Search"
+      component={SearchScreen}
+      options={{
+        headerShown: false,
+        tabBarIcon: ({ focused }) => (
+          <Image
+            source={
+              focused
+                ? require('./assets/Icons/search.png')
+                : require('./assets/Icons/search.png')
+            }
+          />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="About"
+      component={AboutScreen}
+      options={{
+        headerShown: false,
+        tabBarIcon: ({ focused }) => (
+          <Image
+            source={
+              focused
+                ? require('./assets/Icons/search.png')
+                : require('./assets/Icons/search.png')
             }
           />
         ),

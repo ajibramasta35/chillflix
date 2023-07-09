@@ -52,6 +52,9 @@ function HomeScreen() {
   const handleSearch = () => {
     navigation.navigate('Search');
   };
+  const handleMovieDetail = (item) => {
+    navigation.navigate('MovieDetail', { item });
+  };
 
   // scroll on refresh
   const [refreshing, setRefreshing] = React.useState(false);
@@ -83,6 +86,7 @@ function HomeScreen() {
       url: 'https://moviesdatabase.p.rapidapi.com/titles/random',
       params: {
         limit: '5',
+        info: 'base_info',
         startYear: '2000',
         list: 'top_rated_250',
       },
@@ -109,6 +113,7 @@ function HomeScreen() {
       url: 'https://moviesdatabase.p.rapidapi.com/titles/random',
       params: {
         startYear: '2020',
+        info: 'base_info',
         list: 'top_boxoffice_last_weekend_10',
       },
       headers: {
@@ -134,6 +139,7 @@ function HomeScreen() {
       url: 'https://moviesdatabase.p.rapidapi.com/titles',
       params: {
         startYear: '2010',
+        info: 'base_info',
         list: 'top_rated_series_250',
       },
       headers: {
@@ -156,7 +162,10 @@ function HomeScreen() {
   const FeaturedMovieCar = ({ item }) => {
     return (
       <>
-        <TouchableOpacity style={styles.inncersection1}>
+        <TouchableOpacity
+          style={styles.inncersection1}
+          onPress={() => handleMovieDetail(item)}
+        >
           <Image
             style={{
               width: '100%',
@@ -168,7 +177,12 @@ function HomeScreen() {
           />
           <LinearGradient
             style={styles.gradientOverlay}
-            colors={['rgba(0,0,0,0.8)', 'transparent', 'rgba(23, 24, 32, 0.7)', 'rgba(23, 24, 32, 1)']}
+            colors={[
+              'rgba(0,0,0,0.8)',
+              'transparent',
+              'rgba(23, 24, 32, 0.7)',
+              'rgba(23, 24, 32, 1)',
+            ]}
           />
           <View
             style={{
@@ -187,32 +201,25 @@ function HomeScreen() {
                 fontSize: 32,
                 textAlign: 'center',
                 fontWeight: 'bold',
-                paddingBottom:5,
+                paddingBottom: 5,
               }}
             >
               {item.titleText.text}
             </Text>
-            <View style={{ flex: 1, flexDirection: 'row' }}>
-              <Text
-                style={{
-                  color: 'white',
-                  fontSize: 16,
-                  paddingHorizontal: 10,
-                  textAlign: 'center',
-                }}
-              >
-                {item.titleType.text}
-              </Text>
-              <Text
-                style={{
-                  color: 'white',
-                  fontSize: 16,
-                  paddingHorizontal: 10,
-                  textAlign: 'center',
-                }}
-              >
-                {item.releaseYear.year}
-              </Text>
+            <View style={{ flex: 1, flexDirection: 'row', maxWidth: '100%' }}>
+              {item.genres.genres.map((genre, index) => (
+                <Text
+                  key={index}
+                  style={{
+                    color: 'white',
+                    fontSize: 14,
+                    paddingHorizontal: 10,
+                    textAlign: 'center',
+                  }}
+                >
+                  {genre.text.slice(0, 6)}
+                </Text>
+              ))}
             </View>
           </View>
         </TouchableOpacity>
@@ -223,7 +230,10 @@ function HomeScreen() {
   const Topthisweekendcar = ({ item }) => {
     return (
       <>
-        <TouchableOpacity style={styles.inncersection2}>
+        <TouchableOpacity
+          style={styles.inncersection2}
+          onPress={() => handleMovieDetail(item)}
+        >
           <Image
             style={{
               width: '100%',
@@ -246,7 +256,10 @@ function HomeScreen() {
   const TvSeriesCar = ({ item }) => {
     return (
       <>
-        <TouchableOpacity style={styles.inncersection2}>
+        <TouchableOpacity
+          style={styles.inncersection2}
+          onPress={() => handleMovieDetail(item)}
+        >
           <Image
             style={{
               width: '100%',
@@ -266,44 +279,54 @@ function HomeScreen() {
     );
   };
 
+  const [scrollBackground, setScrollBackground] = useState('transparent');
+
+  const handleScroll = (event) => {
+    const { contentOffset } = event.nativeEvent;
+    const backgroundColor = contentOffset.y > 350 ? 'rgba(23, 24, 32, 0.9)' : 'transparent';
+    setScrollBackground(backgroundColor);
+  };
+
   return (
     <>
+      <View style={[styles.Topnav, { backgroundColor: scrollBackground }]}>
+        <Image
+          style={styles.iconlogo}
+          source={require('../assets/Icons/nlogo.png')}
+        />
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            paddingHorizontal: 25,
+          }}
+        >
+          <TouchableOpacity>
+            <Text style={styles.navtext}>Tv Series</Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Text style={styles.navtext} onPress={handleAbout}>
+              Trending
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Text style={styles.navtext}>For You</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity style={styles.iconbutton} onPress={handleSearch}>
+          <Image source={require('../assets/Icons/search.png')} />
+        </TouchableOpacity>
+      </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={styles.scrollcontainer}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
       >
-        <View style={styles.Topnav}>
-          <Image
-            style={styles.iconlogo}
-            source={require('../assets/Icons/nlogo.png')}
-          />
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingHorizontal: 25,
-            }}
-          >
-            <TouchableOpacity>
-              <Text style={styles.navtext}>Tv Series</Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text style={styles.navtext} onPress={handleAbout}>
-                About
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text style={styles.navtext}>For You</Text>
-            </TouchableOpacity>
-          </View>
-          <TouchableOpacity style={styles.iconbutton} onPress={handleSearch}>
-            <Image source={require('../assets/Icons/search.png')} />
-          </TouchableOpacity>
-        </View>
         <View style={styles.section1}>
           {isLoading ? (
             <View
@@ -415,7 +438,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     zIndex: 99,
-    backgroundColor: 'transparent',
     position: 'absolute',
     top: 0,
     right: 0,
