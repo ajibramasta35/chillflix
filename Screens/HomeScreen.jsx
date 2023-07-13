@@ -39,6 +39,8 @@ import axios from 'axios';
 // ];
 
 const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 const windowHeightcar = Dimensions.get('window').height / 1.3;
 
 function HomeScreen() {
@@ -65,19 +67,24 @@ function HomeScreen() {
     fetchFeaturedMovieData();
     fetchTopWeekendData();
     fetchTvSeriesData();
+    fetchComingMoviesData();
     setRefreshing(false);
   };
 
   // API MOvies
   const [featuredMovieData, setFeaturedMovieData] = useState([]);
-  const [topWeekendData, setTopWeekendData] = useState([]);
+  const [topWeekendOptions, setTopWeekendData] = useState([]);
   const [TvSeriesOptions, setTvSeriesData] = useState([]);
+  const [ComingMoviesOptions, setComingMovies] = useState([]);
+
+
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchFeaturedMovieData();
     fetchTopWeekendData();
     fetchTvSeriesData();
+    fetchComingMoviesData();
   }, []);
 
   const fetchFeaturedMovieData = async () => {
@@ -138,7 +145,7 @@ function HomeScreen() {
       method: 'GET',
       url: 'https://moviesdatabase.p.rapidapi.com/titles',
       params: {
-        startYear: '2010',
+        startYear: '200',
         info: 'base_info',
         list: 'top_rated_series_250',
       },
@@ -158,6 +165,33 @@ function HomeScreen() {
       setIsLoading(false);
     }
   };
+
+  const fetchComingMoviesData = async () => {
+    const ComingMoviesOptions = {
+      method: 'GET',
+      url: 'https://moviesdatabase.p.rapidapi.com/titles/random',
+      params: {
+        info: 'base_info',
+        list: 'most_pop_movies'
+      },
+      headers: {
+        'X-RapidAPI-Key': 'edad74d662msh063b941126df1a5p1b3c52jsn0ba45527db17',
+        'X-RapidAPI-Host': 'moviesdatabase.p.rapidapi.com'
+      }
+    };
+
+    try {
+      const response = await axios.request(ComingMoviesOptions);
+      setComingMovies(response.data.results);
+      setIsLoading(false);
+      // console.log(response.data.results);
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+    }
+  };
+
+
 
   const FeaturedMovieCar = ({ item }) => {
     return (
@@ -206,18 +240,19 @@ function HomeScreen() {
             >
               {item.titleText.text}
             </Text>
-            <View style={{ flex: 1, flexDirection: 'row', maxWidth: '100%' }}>
+            <View style={{ flex: 1, flexDirection: 'row'}}>
               {item.genres.genres.map((genre, index) => (
                 <Text
                   key={index}
                   style={{
                     color: 'white',
                     fontSize: 14,
-                    paddingHorizontal: 10,
+                    padding: 4,
                     textAlign: 'center',
+                    alignItems:'center'
                   }}
                 >
-                  {genre.text.slice(0, 6)}
+                  {genre.text}
                 </Text>
               ))}
             </View>
@@ -278,6 +313,31 @@ function HomeScreen() {
       </>
     );
   };
+  const ComingMoviesCar = ({ item }) => {
+    return (
+      <>
+        <TouchableOpacity
+          style={styles.inncersection2}
+          onPress={() => handleMovieDetail(item)}
+        >
+          <Image
+            style={{
+              width: '100%',
+              height: 200,
+              borderRadius: 6,
+              resizeMode: 'cover',
+            }}
+            //   source={{ uri: item.imageUrl }}
+            source={{ uri: item.primaryImage && item.primaryImage.url ? item.primaryImage.url : 'https://placehold.co/200x400/png' }}
+          />
+          <View style={{ maxWidth: '100%' }}>
+            <Text style={styles.judulCard2}>{item.titleText.text}</Text>
+            <Text style={styles.subjudulCard}>{item.releaseYear.year}</Text>
+          </View>
+        </TouchableOpacity>
+      </>
+    );
+  };
 
   const [scrollBackground, setScrollBackground] = useState('transparent');
 
@@ -292,28 +352,8 @@ function HomeScreen() {
       <View style={[styles.Topnav, { backgroundColor: scrollBackground }]}>
         <Image
           style={styles.iconlogo}
-          source={require('../assets/Icons/nlogo.png')}
+          source={require('../assets/Icons/chillflixlogo.png')}
         />
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            paddingHorizontal: 25,
-          }}
-        >
-          <TouchableOpacity>
-            <Text style={styles.navtext}>Tv Series</Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={styles.navtext} onPress={handleAbout}>
-              Trending
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={styles.navtext}>For You</Text>
-          </TouchableOpacity>
-        </View>
         <TouchableOpacity style={styles.iconbutton} onPress={handleSearch}>
           <Image source={require('../assets/Icons/search.png')} />
         </TouchableOpacity>
@@ -372,7 +412,7 @@ function HomeScreen() {
             </View>
           ) : (
             <FlatList
-              data={topWeekendData}
+              data={topWeekendOptions}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               style={{
@@ -418,6 +458,40 @@ function HomeScreen() {
             />
           )}
         </View>
+        <View style={styles.containersection}>
+          <Text style={styles.judul}>Up Comings</Text>
+          <TouchableOpacity>
+            <Text style={styles.subjudulCard}>See all</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.section1}>
+          {isLoading ? (
+            <View
+              style={{
+                flex: 1,
+                height: 200,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <ActivityIndicator size="large" color="#FAFAFA" />
+            </View>
+          ) : (
+            <FlatList
+              data={ComingMoviesOptions}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              style={{
+                paddingBottom: 20,
+                paddingLeft: 10,
+                paddingTop: 10,
+              }}
+              renderItem={({ item }) => <ComingMoviesCar item={item} />}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          )}
+        </View>
+        
       </ScrollView>
     </>
   );
@@ -467,8 +541,8 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
   },
   iconlogo: {
-    height: 50,
-    width: 50,
+    height: 100,
+    width: 100,
     padding: 5,
     alignItems: 'center',
     justifyContent: 'center',

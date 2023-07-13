@@ -44,10 +44,10 @@ function WelcomeScreen() {
           />
           <View style={styles.containerbutton}>
             <Text style={styles.judul}>
-              Nikmati kemudahan nonton Film atau Series dimana saja
+              Nikmati kemudahan nonton Film atau Series dimana saja dengan Chillflix
             </Text>
             <TouchableOpacity style={styles.buttonmasuk} onPress={handlehome}>
-              <Text style={{ color: 'white', fontSize: 16 }}>Lanjutkan</Text>
+              <Text style={{ color: 'white', fontSize: 16 }}>Mulai Nonton</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 130,
+    bottom: 50,
   },
   buttonmasuk: {
     marginTop: 20,

@@ -66,8 +66,11 @@ export default function App() {
               name="MovieDetail"
               component={MoviedetailScreen}
               options={{
-                cardStyle: {
-                  backgroundColor: 'red',
+                headerShown: true,
+                headerTransparent: true,
+                headerTintColor: 'white',
+                headerTitleStyle: {
+                  display: 'none',
                 },
               }}
             />
@@ -96,8 +99,8 @@ const HomeStack = () => (
           <Image
             source={
               focused
-                ? require('./assets/Icons/menu.png')
-                : require('./assets/Icons/search.png')
+                ? require('./assets/Icons/menured.png')
+                : require('./assets/Icons/menu.png')
             }
           />
         ),
@@ -108,12 +111,13 @@ const HomeStack = () => (
       component={SearchScreen}
       options={{
         headerShown: false,
+        tabBarLabel:'Explore',
         tabBarIcon: ({ focused }) => (
           <Image
             source={
               focused
-                ? require('./assets/Icons/search.png')
-                : require('./assets/Icons/search.png')
+                ? require('./assets/Icons/tviconred.png')
+                : require('./assets/Icons/tvicon.png')
             }
           />
         ),
