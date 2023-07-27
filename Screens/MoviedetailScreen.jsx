@@ -18,6 +18,8 @@ const windowHeight = Dimensions.get('window').height;
 
 function MoviedetailScreen() {
   const route = useRoute();
+  const { item} = route.params
+  // console.log(item);
 
   return (
     <>
@@ -30,7 +32,7 @@ function MoviedetailScreen() {
                 height: windowHeight / 1.3,
                 resizeMode: 'cover',
               }}
-              source={{ uri: route.params.item.primaryImage.url }}
+              source={{ uri: item.primaryImage.url }}
             />
             <LinearGradient
               style={styles.gradientOverlay}
@@ -61,10 +63,10 @@ function MoviedetailScreen() {
                   paddingBottom: 5,
                 }}
               >
-                {route.params.item.titleText.text}
+                {item.titleText.text}
               </Text>
               <Text style={styles.plot}>
-                {route.params.item.plot.plotText.plainText}
+                {item.plot.plotText.plainText}
               </Text>
 
               <View
@@ -101,13 +103,13 @@ function MoviedetailScreen() {
               <View style={styles.subrowketcontainer}>
                 <Text style={styles.headingdesc}>Genre:</Text>
                 <Text style={styles.desc}>
-                  {route.params.item.titleText.text}
+                  {item.titleText.text}
                 </Text>
               </View>
               <View style={styles.subrowketcontainer}>
                 <Text style={styles.headingdesc}>Type:</Text>
                 <Text style={styles.desc}>
-                  {route.params.item.titleType.text}
+                  {item.titleType.text}
                 </Text>
               </View>
             </View>
@@ -116,7 +118,7 @@ function MoviedetailScreen() {
               <View style={styles.subrowketcontainer}>
                 <Text style={styles.headingdesc}>Genre</Text>
                 <Text style={styles.desc}>
-                  {route.params.item.genres.genres.map((genre, index) => (
+                  {item.genres.genres.map((genre, index) => (
                     <Text
                       key={index}
                       style={{
@@ -133,7 +135,7 @@ function MoviedetailScreen() {
               <View style={styles.subrowketcontainer}>
                 <Text style={styles.headingdesc}>Rating</Text>
                 <Text style={styles.desc}>
-                  {route.params.item.ratingsSummary.aggregateRating}/10
+                  {item.ratingsSummary.aggregateRating}/10
                 </Text>
               </View>
             </View>
@@ -142,13 +144,13 @@ function MoviedetailScreen() {
               <View style={styles.subrowketcontainer}>
                 <Text style={styles.headingdesc}>Year</Text>
                 <Text style={styles.desc}>
-                  {route.params.item.releaseYear.year}
+                  {item.releaseYear.year}
                 </Text>
               </View>
               <View style={styles.subrowketcontainer}>
                 <Text style={styles.headingdesc}>Position</Text>
                 <Text style={styles.desc}>
-                  {route.params.item.position}
+                  {item.position}
                 </Text>
               </View>
             </View>
@@ -156,7 +158,7 @@ function MoviedetailScreen() {
               <View style={styles.subrowketcontainer}>
                 <Text style={styles.headingdesc}>Language</Text>
                 <Text style={styles.desc}>
-                  {route.params.item.plot.language.id}
+                  {item.plot.language.id}
                 </Text>
               </View>
               <View style={styles.subrowketcontainer}>

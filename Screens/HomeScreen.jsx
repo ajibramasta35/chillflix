@@ -10,6 +10,7 @@ import {
   RefreshControl,
   ActivityIndicator,
   Dimensions,
+  Animated,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -57,7 +58,6 @@ function HomeScreen() {
   const handleMovieDetail = (item) => {
     navigation.navigate('MovieDetail', { item });
   };
-
   // scroll on refresh
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -94,7 +94,7 @@ function HomeScreen() {
       params: {
         limit: '5',
         info: 'base_info',
-        startYear: '2000',
+        startYear: '2006',
         list: 'top_rated_250',
       },
       headers: {
@@ -145,7 +145,7 @@ function HomeScreen() {
       method: 'GET',
       url: 'https://moviesdatabase.p.rapidapi.com/titles',
       params: {
-        startYear: '200',
+        startYear: '2010',
         info: 'base_info',
         list: 'top_rated_series_250',
       },
@@ -339,17 +339,22 @@ function HomeScreen() {
     );
   };
 
-  const [scrollBackground, setScrollBackground] = useState('transparent');
+  const scrollY = useRef(new Animated.Value(0)).current;
 
-  const handleScroll = (event) => {
-    const { contentOffset } = event.nativeEvent;
-    const backgroundColor = contentOffset.y > 350 ? 'rgba(23, 24, 32, 0.9)' : 'transparent';
-    setScrollBackground(backgroundColor);
-  };
+  const handleScroll = Animated.event(
+    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+    { useNativeDriver: false },
+  );
+
+  const headerBackgroundColor = scrollY.interpolate({
+    inputRange: [0, 100], // Nilai scroll yang digunakan sebagai trigger
+    outputRange: ['transparent', '#1f1f1f'], // Background color yang ingin diubah
+    extrapolate: 'clamp',
+  });
 
   return (
     <>
-      <View style={[styles.Topnav, { backgroundColor: scrollBackground }]}>
+      <Animated.View style={[styles.Topnav, { backgroundColor: headerBackgroundColor }]}>
         <Image
           style={styles.iconlogo}
           source={require('../assets/Icons/chillflixlogo.png')}
@@ -357,7 +362,7 @@ function HomeScreen() {
         <TouchableOpacity style={styles.iconbutton} onPress={handleSearch}>
           <Image source={require('../assets/Icons/search.png')} />
         </TouchableOpacity>
-      </View>
+      </Animated.View>
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={styles.scrollcontainer}
@@ -500,7 +505,7 @@ function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#171820',
+    backgroundColor: '#1f1f1f',
   },
   Topnav: {
     flex: 1,

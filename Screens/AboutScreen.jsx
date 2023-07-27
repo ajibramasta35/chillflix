@@ -14,7 +14,7 @@ import {
 function AboutScreen() {
   return (
     <View style={{ flex:1, justifyContent:'center', alignItems:'center' }}>
-      <Text> Ini Halaman About COK</Text>
+      <Text style={{ color:'white' }}> Ini Halaman About</Text>
     </View>
   );
 }

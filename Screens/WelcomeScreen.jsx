@@ -22,7 +22,7 @@ function WelcomeScreen() {
   const navigation = useNavigation();
   // Navigate to About
   const handlehome = () => {
-    navigation.navigate('Homestack');
+    navigation.navigate('Login');
   };
 
   return (

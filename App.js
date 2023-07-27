@@ -8,11 +8,12 @@ import {
   createStackNavigator,
   TransitionPresets,
 } from '@react-navigation/stack';
-import HomeScreen from './Screens/HomeScreen';
-import AboutScreen from './Screens/AboutScreen';
-import SearchScreen from './Screens/SearchScreen';
-import WelcomeScreen from './Screens/WelcomeScreen';
-import MoviedetailScreen from './Screens/MoviedetailScreen';
+import HomeScreen from './Screens/HomeScreen.jsx';
+import AboutScreen from './Screens/AboutScreen.jsx';
+import SearchScreen from './Screens/SearchScreen.jsx';
+import WelcomeScreen from './Screens/WelcomeScreen.jsx';
+import MoviedetailScreen from './Screens/MoviedetailScreen.jsx';
+import LoginScreen from './Screens/LoginScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -27,6 +28,16 @@ export default function App() {
             <Stack.Screen
               name="Welcome"
               component={WelcomeScreen}
+              options={{
+                headerShown: false,
+                cardStyle: {
+                  backgroundColor: 'white',
+                },
+              }}
+            />
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
               options={{
                 headerShown: false,
                 cardStyle: {
@@ -86,7 +97,7 @@ const HomeStack = () => (
     screenOptions={{
       tabBarStyle: styles.tabBarStyle,
       tabBarActiveTintColor: 'red',
-      tabBarInactiveTintColor: '#e5e5e5',
+      tabBarInactiveTintColor: '#fafafa',
     }}
     sceneContainerStyle={{ backgroundColor: '#171820' }}
   >
@@ -132,8 +143,8 @@ const HomeStack = () => (
           <Image
             source={
               focused
-                ? require('./assets/Icons/search.png')
-                : require('./assets/Icons/search.png')
+                ? require('./assets/Icons/abouticonred.png')
+                : require('./assets/Icons/abouticon.png')
             }
           />
         ),
@@ -148,7 +159,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#171820',
   },
   tabBarStyle: {
-    backgroundColor: 'black',
+    backgroundColor: '#171820',
     position: 'absolute',
     left: 0,
     bottom: 0,

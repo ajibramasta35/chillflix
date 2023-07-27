@@ -13,10 +13,10 @@ import {
 
 function SearchScreen() {
   return (
-    <View style={{ flex:1, justifyContent:'center', alignItems:'center' }}>
-    <Text> Ini Halaman About COK</Text>
-  </View>
-  )
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text style={{ color: 'white' }}> Ini Halaman Explore</Text>
+    </View>
+  );
 }
 
-export default SearchScreen
+export default SearchScreen;
